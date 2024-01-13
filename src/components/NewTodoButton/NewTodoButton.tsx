@@ -25,7 +25,9 @@ export const NewTodoButton: React.FC<NewTodoButtonProps> = ({ onAddTodo }) => {
       <CardButton onClick={handleAddButtonClick} disabled={isAdding}>
         <IoIosAddCircle />
       </CardButton>
-      {isAdding && <NewTodoForm onAddTodo={onAddTodo} onCancel={handleCancel} />}
+      {isAdding && (
+        <NewTodoForm onAddTodo={onAddTodo} onCancel={handleCancel} />
+      )}
     </>
   );
 };

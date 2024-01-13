@@ -4,6 +4,12 @@
 
 }
 
+export interface IOneCard{
+    _id: string ,
+   name: string,
+   todos: ITodo[],
+}
+
 export interface ITodo {
    _id: string,
    title: string,

@@ -8,8 +8,39 @@ padding-bottom: 50px;
 color: #413941;
 text-align: center;`
 
-export const Img = styled.img`
 
-margin: 0 auto;
+export const CardListContainer = styled.ul`
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+`;
 
-`
+export const CardListItem = styled.li`
+  background-color: #f7ef7a;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #4f2817; 
+  }
+
+  p {
+    margin-bottom: 10;
+    font-size: 16px;
+    font-weight: bold;
+    color: #333; 
+  }
+
+
+`;
+
+export const HomeTitle = styled.h1`
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #333; 
+`;

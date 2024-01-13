@@ -4,7 +4,7 @@ export const Title = styled.h2`
   margin-bottom: 15px;
   padding-top: 15px;
   padding-bottom: 15px;
-  // margin-left: 50px;
+ 
 `;
 
 export const Board = styled.div`
@@ -16,6 +16,8 @@ padding: 20px 10px;
 export const ColumnWrap = styled.div`
 display: flex;
 justify-content: space-between; 
+flew-wrap: wrap;
+
 
 `
 

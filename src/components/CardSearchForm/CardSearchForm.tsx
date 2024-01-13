@@ -1,28 +1,43 @@
-// CardSearchForm.tsx
+import React, { useState } from "react";
 
-import React, { useEffect, useState } from "react";
-import { useGetAllTodosforCardQuery } from "../../redux/todoOperations";
-import { ITodo } from "../../types/types";
+import {
+  Input,
+  Label,
+  SearchButton,
+  SearchFormContainer,
+} from "./CardSearchForm.styled";
 
 interface CardSearchFormProps {
   onCardSearch: (cardId: string) => void;
 }
 
-export const CardSearchForm: React.FC<CardSearchFormProps> = ({onCardSearch} ) => {
+export const CardSearchForm: React.FC<CardSearchFormProps> = ({
+  onCardSearch,
+}) => {
   const [cardId, setCardId] = useState<string>("");
-
-   const handleCardSearch = (e: React.FormEvent) => {
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const handleCardSearch = (e: React.FormEvent) => {
     e.preventDefault();
+
     onCardSearch(cardId);
+
+    setErrorMessage(null);
+
+    setCardId("");
   };
- 
+
   return (
-      <form onSubmit={handleCardSearch}>
-      <label>
+    <SearchFormContainer onSubmit={handleCardSearch}>
+      <Label>
         Card ID:
-        <input type="text" value={cardId} onChange={(e) => setCardId(e.target.value)} />
-      </label>
-      <button type="submit">Search</button>
-    </form>
+        <Input
+          type="text"
+          value={cardId}
+          onChange={(e) => setCardId(e.target.value)}
+        />
+      </Label>
+      <SearchButton type="submit">Search</SearchButton>
+      {errorMessage && <p>{errorMessage}</p>}
+    </SearchFormContainer>
   );
 };
