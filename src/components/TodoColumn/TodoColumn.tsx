@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 import { IDataTodo, IOneCard, ITodo } from "../../types/types";
 import { Todo } from "../Todo/Todo";
@@ -20,7 +20,7 @@ export const TodoColumn: React.FC<TodoColumnProps> = ({
   data,
 }) => {
   const [addTodo, { isLoading: isAdding }] = useAddTodoMutation();
-  const [isEditing, setIsEditing] = useState(false);
+  
 
   if (!data) {
     return <Loader />;
@@ -28,7 +28,7 @@ export const TodoColumn: React.FC<TodoColumnProps> = ({
 
   const handleAddTodo = (newTodo: IDataTodo) => {
     addTodo({ todoData: newTodo, cardId: data._id });
-    setIsEditing(false);
+  
   };
 
   if (isAdding) return <Loader />;

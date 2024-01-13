@@ -15,10 +15,12 @@ export const CardListContainer = styled.ul`
   margin: 20px 0;
   display: flex;
   flex-wrap: wrap;
+justify-content: center;
   gap: 20px;
 `;
 
 export const CardListItem = styled.li`
+max-width: 220px;
   background-color: #f7ef7a;
   padding: 20px;
   border-radius: 8px;
@@ -31,7 +33,7 @@ export const CardListItem = styled.li`
 
   p {
     margin-bottom: 10;
-    font-size: 16px;
+    font-size: 12px;
     font-weight: bold;
     color: #333; 
   }

@@ -24,6 +24,9 @@ export const TodoList: React.FC<TodoListProps> = ({ currentCardId }) => {
     isLoading: changeStateIsLoading,
   } = useGetOneCardQuery(currentCardId || "");
 
+
+   const [isChangingState, setIsChangingState] = useState(false);
+
   const todoStatuses = ["To do", "In progress", "Done"];
 
   useEffect(() => {
@@ -32,65 +35,80 @@ export const TodoList: React.FC<TodoListProps> = ({ currentCardId }) => {
     }
   }, [data]);
 
-  const handleDragEnd = (result: DropResult) => {
+
+
+  const handleDragEnd = async (result: DropResult) => {
+   
+     setIsChangingState(true);
     const { source, destination, draggableId } = result;
 
-    if (!result.destination) {
+    if (!destination) {
+       setIsChangingState(false);
       return;
     }
 
-    if (
-      source.droppableId === destination?.droppableId &&
-      source.index === destination?.index
-    )
-      return;
-
-    if (
-      !destination ||
-      !destination.droppableId ||
-      !destination.hasOwnProperty("index")
-    ) {
+    if (source.droppableId === destination.droppableId && source.index === destination.index) {
+       setIsChangingState(false);
       return;
     }
 
     const updatedTodos = [...loadedTodos];
+    
+   
+    const sourceColumnTodos = updatedTodos.filter((todo) => todo.state === source.droppableId);
+    
+  
+    const movedTodo = sourceColumnTodos.find((todo) => todo._id === draggableId);
 
-    if (source.droppableId === destination.droppableId) {
-      const movedIndex = updatedTodos.findIndex(
-        (todo) => todo._id === draggableId
-      );
-      const movedTodo = updatedTodos[movedIndex];
-
-      updatedTodos.splice(movedIndex, 1);
-      updatedTodos.splice(destination.index, 0, movedTodo);
-    } else {
-      const newStatus = destination.droppableId;
-      changeTodoState({ cardId: draggableId, data: { state: newStatus } });
+    if (!movedTodo) {
+      setIsChangingState(false);
+      
+      return;
     }
 
-    setLoadedTodos(updatedTodos);
+   
+    const filteredSourceColumnTodos = sourceColumnTodos.filter((todo) => todo._id !== draggableId);
+
+  
+    filteredSourceColumnTodos.splice(destination.index, 0, movedTodo);
+
+
+    const updatedTodosCopy = updatedTodos.filter((todo) => todo.state !== source.droppableId);
+    updatedTodosCopy.push(...filteredSourceColumnTodos);
+
+   
+    setLoadedTodos(updatedTodosCopy);
+
+   
+    if (source.droppableId !== destination.droppableId) {
+      const newStatus = destination.droppableId;
+      await changeTodoState({ cardId: draggableId, data: { state: newStatus } });
+    }
+     setIsChangingState(false);
   };
 
   if (error) return <p>Sorry no data yet!</p>;
-  if (changeStateIsLoading) return <Loader />;
+
 
   return (
     <>
       <Board>
         <ColumnWrap>
-          <DragDropContext onDragEnd={handleDragEnd}>
+          <DragDropContext  onDragEnd={handleDragEnd}>
             {todoStatuses.map((status, index) => (
               <ColumnWrap key={status}>
                 <TodoColumn
                   data={data}
                   title={status}
-                  todos={loadedTodos.filter((todo) => todo.state === status)}
+                  todos={loadedTodos.filter((todo: ITodo) => todo.state === status)}
                 />
               </ColumnWrap>
             ))}
           </DragDropContext>
         </ColumnWrap>
       </Board>
+      {isChangingState  && <Loader />}
+     {changeStateIsLoading && <Loader/>}
     </>
   );
 };

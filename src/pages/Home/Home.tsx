@@ -11,13 +11,12 @@ import { Loader } from "../../components/Loader/Loader";
 export const Home = () => {
   const {
     data: cardsData,
-    error,
+
     isLoading: cardsLoading,
   } = useGetAllCardsQuery();
   const [currentCardId, setCurrentCardId] = useState<string | undefined>(
     cardsData?.[0]?._id
   );
-  console.log(process.env)
 
   useEffect(() => {
     if (!currentCardId && cardsData && cardsData.length > 0) {
