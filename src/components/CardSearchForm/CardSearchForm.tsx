@@ -17,11 +17,13 @@ export const CardSearchForm: React.FC<CardSearchFormProps> = ({
   const [cardId, setCardId] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const handleCardSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    onCardSearch(cardId);
-
-    setErrorMessage(null);
+      e.preventDefault();
+          if (cardId.trim() === "") {
+      setErrorMessage("Please enter a search parameter.");
+    } else {
+      onCardSearch(cardId.trim());
+      setErrorMessage(null);
+    }
 
     setCardId("");
   };

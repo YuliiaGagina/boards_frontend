@@ -2,6 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
   ICard,
   IDataAdd,
+  IDataCard,
   IDataTodo,
   IOneCard,
   IStateTodo,
@@ -59,10 +60,29 @@ export const api = createApi({
     }),
     getAllCards: builder.query<ICard[], void>({
       query: () => "/api/cards",
+       providesTags: ["Cards", "Todos"],
     }),
     getOneCard: builder.query<IOneCard, string>({
       query: (cardId) => `/api/cards/${cardId}`,
       providesTags: ["Cards", "Todos"],
+    }),
+     addCard: builder.mutation<
+      IDataAdd,
+      { cardData: IDataCard }
+    >({
+      query: ({ cardData}) => ({
+        url: "/api/cards/",
+        method: "POST",
+        body: { ...cardData},
+      }),
+      invalidatesTags: ["Todos", "Cards"],
+    }),
+        deleteCard: builder.mutation<void, string>({
+      query: (cardId) => ({
+        url: `/api/cards/${cardId}/`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Todos", "Cards"],
     }),
   }),
 });
@@ -75,4 +95,6 @@ export const {
   useChangeTodoStateMutation,
   useGetAllCardsQuery,
   useGetOneCardQuery,
+  useAddCardMutation,
+  useDeleteCardMutation
 } = api;

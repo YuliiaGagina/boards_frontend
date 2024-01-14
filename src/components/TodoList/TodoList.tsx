@@ -17,6 +17,7 @@ interface TodoListProps {
 
 export const TodoList: React.FC<TodoListProps> = ({ currentCardId }) => {
   const [loadedTodos, setLoadedTodos] = useState<ITodo[]>([]);
+  
   const [changeTodoState] = useChangeTodoStateMutation();
   const {
     data,

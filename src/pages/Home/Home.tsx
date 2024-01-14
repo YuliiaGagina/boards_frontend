@@ -1,12 +1,18 @@
 import { useEffect, useState } from "react";
 
 import { TodoList } from "../../components/TodoList/TodoList";
-
-import { Title, CardListItem, CardListContainer } from "./Home.styled";
-
+import { Title } from "./Home.styled";
 import { CardSearchForm } from "../../components/CardSearchForm/CardSearchForm";
-import { useGetAllCardsQuery } from "../../redux/todoOperations";
+import {
+  useAddCardMutation,
+  useGetAllCardsQuery,
+} from "../../redux/todoOperations";
 import { Loader } from "../../components/Loader/Loader";
+import { CardList } from "../../components/CardList/CardList";
+import { CardForm } from "../../components/CardForm/CardForm";
+import { IDataCard } from "../../types/types";
+import { IoAddCircleSharp } from "react-icons/io5";
+import { Button } from './Home.styled';
 
 export const Home = () => {
   const {
@@ -17,34 +23,39 @@ export const Home = () => {
   const [currentCardId, setCurrentCardId] = useState<string | undefined>(
     cardsData?.[0]?._id
   );
-
+  const [isAddFormVisible, setIsAddFormVisible] = useState<boolean>(false);
+  const [addCard, { isLoading: addCardLoading }] = useAddCardMutation();
   useEffect(() => {
     if (!currentCardId && cardsData && cardsData.length > 0) {
       setCurrentCardId(cardsData[0]._id);
     }
   }, [cardsData, currentCardId]);
 
+  const handleCardAdd = (newCard: IDataCard) => {
+    addCard({ cardData: newCard });
+    setIsAddFormVisible(false);
+  };
+
   const handleCardSearch = (cardId: string) => {
     setCurrentCardId(cardId);
   };
 
-  if (cardsLoading) return <Loader />;
+  if (addCardLoading) return <Loader />;
 
   return (
-    <>
+    <main>
       <Title>If you want to find a Card use а unique id!</Title>
-      <CardListContainer>
-        {cardsData?.map((card) => (
-          <CardListItem key={card._id}>
-            {" "}
-            <p> name:{card.name}</p> <p>id:{card._id} </p> <p></p>
-          </CardListItem>
-        ))}
-      </CardListContainer>
+      <CardList cardsData={cardsData || []} />
+      {isAddFormVisible ? (
+        <CardForm onCardAdd={handleCardAdd} />
+      ) : (
+          
+        <Button onClick={() => setIsAddFormVisible(true)}><IoAddCircleSharp/></Button>
+      )}
 
       <CardSearchForm onCardSearch={handleCardSearch} />
 
       {currentCardId && <TodoList currentCardId={currentCardId} />}
-    </>
+    </main>
   );
 };
