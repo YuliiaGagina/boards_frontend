@@ -20,7 +20,7 @@ interface CardListProps {
 export const CardList: React.FC<CardListProps> = ({ cardsData }) => {
 
    
-    console.log(cardsData);
+   
     const [deleteCardMutation, { isLoading: loadeingForDelete }] = useDeleteCardMutation();
     
       const handleCardDelete =  (cardId: string) => {

@@ -8,9 +8,10 @@ import {
   IStateTodo,
   ITodo,
 } from "../types/types";
+const apiUrl = process.env.REACT_APP_API_URL;
 
 export const api = createApi({
-  baseQuery: fetchBaseQuery({ baseUrl:'https://boards2311.onrender.com' }),
+  baseQuery: fetchBaseQuery({ baseUrl: `${apiUrl}`}),
   tagTypes: ["Todos", "Cards"],
   endpoints: (builder) => ({
     getAllTodosforCard: builder.query<{ todos: ITodo[] }, string>({
