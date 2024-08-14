@@ -18,7 +18,7 @@ max-width: 220px;
   transition: background-color 0.3s ease;
 
   &:hover {
-    background-color: rgba(151, 47, 117, 0.6); 
+    background-color: rgba(151, 47, 117, 0.7); 
   }
 
   p {
